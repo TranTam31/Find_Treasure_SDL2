@@ -1,0 +1,6 @@
+﻿  Geometric.cpp
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Geometric.h(13,2): warning C4091: 'typedef ': ignored on left of 'GeometricFormat' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Geometric.h(22,2): warning C4091: 'typedef ': ignored on left of 'ColorData' when no variable is declared
+  SetUpSDL2.vcxproj -> C:\Users\hahah\source\repos\SetUpSDL2\x64\Debug\SetUpSDL2.exe
