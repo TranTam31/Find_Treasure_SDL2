@@ -51,6 +51,9 @@
     <ClCompile Include="Geometric.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Taisao.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonFunc.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Geometric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Taisao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
