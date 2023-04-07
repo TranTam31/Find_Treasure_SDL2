@@ -1,4 +1,4 @@
-#ifndef TEXT_OBJECT_H
+﻿#ifndef TEXT_OBJECT_H
 #define TEXT_OBJECT_H
 #include "CommonFunc.h"
 
@@ -8,13 +8,13 @@ public:
 	TextObject();
 	~TextObject();
 
-	enum TectColor
+	enum TextColor
 	{
 		RED_TEXT = 0,
 		WHITE_TEXT = 1,
 		BLACK_TEXT = 2,
 	};
-
+ 
 	bool LoadFromRenderText(TTF_Font* font, SDL_Renderer* screen);
 	void Free();
 
@@ -26,7 +26,8 @@ public:
 		SDL_Rect* clip = NULL,
 		double angle = 0.0,
 		SDL_Point* center = NULL,
-		SDL_RendererFlip flip = SDL_FLIP_NONE);
+		SDL_RendererFlip flip = SDL_FLIP_NONE); // show text lên màn hình
+
 	int GetWidth() const { return width_; }
 	int GetHeight() const { return height_; }
 
@@ -35,7 +36,7 @@ public:
 private:
 	std::string str_val_;
 	SDL_Color text_color_;
-	SDL_Texture* texture_;
+	SDL_Texture* texture_; // quản lý text
 	int width_;
 	int height_;
 };

@@ -1,4 +1,4 @@
-#ifndef THREAT_OBJECT_H_
+﻿#ifndef THREAT_OBJECT_H_
 #define THREAT_OBJECT_H_
 
 #include"CommonFunc.h"
@@ -34,7 +34,9 @@ public:
 	void Show(SDL_Renderer* des);
 	int get_width_frame() const { return width_frame_; }
 	int get_height_frame() const { return height_frame_; }
-	void DoPlayer(Map& gMap);
+	SDL_Rect GetRectFrame();
+	// khả năng không dùng
+	/*void DoPlayer(Map& gMap);
 	void CheckToMap(Map& gMap);
 	void InitThreat();
 
@@ -49,28 +51,29 @@ public:
 	
 	void InitBullet(BulletObject* p_bullet, SDL_Renderer* screen);
 	void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit);
-	void RemoveBullet(const int& idx);
+	void RemoveBullet(const int& idx);*/
 private:
-
 	int map_x_;
 	int map_y_;
 	float x_val_;
 	float y_val_;
 	float x_pos_;
 	float y_pos_;
-	bool on_ground_;
-	int come_back_time_;
+
+	//bool on_ground_;
+	//int come_back_time_;
+
 	SDL_Rect frame_clip_[THREAT_FRAME_NUM];
 	int width_frame_;
 	int height_frame_;
 	int frame_;
 
-	int type_move_;
+	/*int type_move_;
 	int animation_a_;
 	int animation_b_;
 	Input input_type_;
 
-	std::vector<BulletObject*> bullet_list_;
+	std::vector<BulletObject*> bullet_list_;*/
 };
 
 #endif // !THREAT_OBJECT_H_

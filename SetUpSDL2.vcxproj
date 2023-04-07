@@ -139,8 +139,7 @@
     <ClCompile Include="ImpTimer.cpp" />
     <ClCompile Include="Main2.cpp" />
     <ClCompile Include="MainObject.cpp" />
-    <ClCompile Include="PlayerPower.cpp" />
-    <ClCompile Include="Taisao.cpp" />
+    <ClCompile Include="PlayerMoney.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="ThreatObject.cpp" />
   </ItemGroup>
@@ -153,8 +152,7 @@
     <ClInclude Include="Geometric.h" />
     <ClInclude Include="ImpTimer.h" />
     <ClInclude Include="MainObject.h" />
-    <ClInclude Include="PlayerPower.h" />
-    <ClInclude Include="Taisao.h" />
+    <ClInclude Include="PlayerMoney.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="ThreatObject.h" />
   </ItemGroup>

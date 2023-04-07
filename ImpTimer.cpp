@@ -1,10 +1,10 @@
-#include"ImpTimer.h"
+﻿#include"ImpTimer.h"
 #include"CommonFunc.h"
 
 ImpTimer::ImpTimer()
 {
 	start_tick_ = 0;
-	paused_tick_ = 0;
+	paused_tick_ = 0;  // xử lý các lệnh dừng trong game
 	is_paused_ = false;
 	is_started_ = false;
 }

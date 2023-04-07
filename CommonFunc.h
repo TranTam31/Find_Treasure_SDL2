@@ -28,7 +28,7 @@ const int RENDER_DRAW_COLOR = 0Xff;
 #define BLANK_TILE 0
 #define TILE_SIZE 64
 
-#define MAX_MAP_X 400
+#define MAX_MAP_X 190
 #define MAX_MAP_Y 10
 
 #define STATE_MONEY 4

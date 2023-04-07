@@ -1,6 +1,23 @@
-﻿  Geometric.cpp
+﻿  BaseObject.cpp
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
+  Main2.cpp
 C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
 C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
 C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Geometric.h(13,2): warning C4091: 'typedef ': ignored on left of 'GeometricFormat' when no variable is declared
 C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Geometric.h(22,2): warning C4091: 'typedef ': ignored on left of 'ColorData' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(74,28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(77,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(78,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(92,27): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(127,41): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(229,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(230,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(264,53): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(269,40): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(276,54): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  PlayerMoney.cpp
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
+  Generating Code...
   SetUpSDL2.vcxproj -> C:\Users\hahah\source\repos\SetUpSDL2\x64\Debug\SetUpSDL2.exe

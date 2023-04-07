@@ -45,13 +45,10 @@
     <ClCompile Include="TextObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerPower.cpp">
+    <ClCompile Include="PlayerMoney.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Geometric.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Taisao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,13 +80,10 @@
     <ClInclude Include="TextObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerPower.h">
+    <ClInclude Include="PlayerMoney.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Geometric.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Taisao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
