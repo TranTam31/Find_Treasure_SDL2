@@ -12,6 +12,7 @@ using namespace SDLCommonFunc;
 
 BaseObject g_background;
 TTF_Font* font_time = NULL;
+TTF_Font* font_time_name = NULL;
 
 bool InitData()
 {
@@ -36,7 +37,8 @@ bool InitData()
 		}
 		// text
 		if (TTF_Init() == -1) success = false;
-		font_time = TTF_OpenFont("font//dlxfont_.ttf", 15);
+		font_time = TTF_OpenFont("font//SuperMario256.ttf", 15); // 15 là kích cỡ text
+		font_time_name = TTF_OpenFont("font//SuperMario256.ttf", 35);
 		if (font_time == NULL) success = false;
 	}
 	return success;
@@ -60,27 +62,9 @@ void close()
 	SDL_Quit();
 }
 
-std::vector<ThreatObject*> MakeThreadList()  // hàm này để tạo ra các Threats
+std::vector<ThreatObject*> MakeThreadListA()  // hàm này để tạo ra các Threats là con vạt
 {
 	std::vector<ThreatObject*> list_threats;
-
-	ThreatObject* dynamic_threat = new ThreatObject[20];
-	for (int i = 0; i < 20; i++) {
-		ThreatObject* p_threat = (dynamic_threat + i);
-		if (p_threat != NULL) {
-			p_threat->LoadImg("img//threat_left.png", g_screen);
-			p_threat->set_clip(); 
-			//p_threat->set_type_move(ThreatObject::MOVE_IN_SPACE_THREAT);
-			p_threat->set_x_pos(500 + i * 500); // vị trí của con này trong màn hình
-			p_threat->set_y_pos(397);
-
-			int pos1 = p_threat->get_x_pos() - 60;
-			int pos2 = p_threat->get_x_pos() + 60;
-			/*p_threat->SetAnimationPos(pos1, pos2);
-			p_threat->set_input_left(1);*/
-			list_threats.push_back(p_threat);
-		}
-	}
 
 	ThreatObject* threats_objs = new ThreatObject[20];
 	
@@ -90,12 +74,7 @@ std::vector<ThreatObject*> MakeThreadList()  // hàm này để tạo ra các Th
 			p_threat->LoadImg("img//threat_level.png", g_screen);
 			p_threat->set_clip();
 			p_threat->set_x_pos(700+i*1200);
-			p_threat->set_y_pos(388);
-			/*p_threat->set_type_move(ThreatObject::STATIC_THREAT);
-			p_threat->set_input_left(0);*/
-
-			//BulletObject* p_bullet = new BulletObject();
-			//p_threat->InitBullet(p_bullet, g_screen);
+			p_threat->set_y_pos(388+64);
 
 			list_threats.push_back(p_threat);
 		}
@@ -103,12 +82,51 @@ std::vector<ThreatObject*> MakeThreadList()  // hàm này để tạo ra các Th
 	return list_threats;
 }
 
+std::vector<ThreatObject*> MakeThreadListB()  // hàm này để tạo ra các Threats là cái bom
+{
+	std::vector<ThreatObject*> list_threats;
+
+	ThreatObject* dynamic_threat = new ThreatObject[11];
+
+	for (int i = 0; i < 10; i++) {
+		ThreatObject* p_threat = (dynamic_threat + i);
+		if (p_threat != NULL) {
+			p_threat->LoadImg("img//anhdinhlam.png", g_screen);
+			p_threat->set_clip(); 
+			p_threat->set_x_pos(2*(500 + i * 500)); // vị trí của con này trong màn hình
+			p_threat->set_y_pos(390+64);
+
+			int pos1 = p_threat->get_x_pos() - 60;
+			int pos2 = p_threat->get_x_pos() + 60;
+			list_threats.push_back(p_threat);
+		}
+	}
+	return list_threats;
+}
+
+ThreatObject* MakeThreadListC()  // hàm này để tạo ra vạch đích
+{
+	ThreatObject* p_threat = new ThreatObject;
+
+		//ThreatObject* p_threat = (dynamic_threat + i);
+		if (p_threat != NULL) {
+			p_threat->LoadImg("img//khobauchuan1.png", g_screen);
+			p_threat->set_clip();
+			p_threat->set_x_pos(12032); // vị trí của con này trong màn hình
+			p_threat->set_y_pos(390);
+
+			int pos1 = p_threat->get_x_pos() - 60;
+			int pos2 = p_threat->get_x_pos() + 60;
+		}
+	return p_threat;
+}
+
 int main(int argc, char* argv[])
 {
 	ImpTimer fps_timer;
 
 	if (InitData() == false) return -1;
-	g_background.LoadImg("img//anhbautroi1.jpg", g_screen);
+	g_background.LoadImg("img//anhbautroi.jpg", g_screen);
 
 
 	GameMap game_map;
@@ -119,12 +137,16 @@ int main(int argc, char* argv[])
 	p_player.LoadImg("img//player_right.png", g_screen);
 	p_player.set_clips();
 
-	std::vector<ThreatObject*> threats_list = MakeThreadList();
+	// tạo ra Threat A và B
+	std::vector<ThreatObject*> threats_listA = MakeThreadListA();
+	std::vector<ThreatObject*> threats_listB = MakeThreadListB();
+	// đây là home nè
+	ThreatObject* p_threat = MakeThreadListC();
 
 	// hình ảnh của đồng tiền
 	PlayerMoney player_money;
 	player_money.Init(g_screen);
-	player_money.SetPos(SCREEN_WIDTH * 0.5 - 290, 8);
+	player_money.SetPos(5, 75);
 
 	// các text money, thời gian, số lượng Threat bắn được
 	TextObject time_game;
@@ -137,6 +159,9 @@ int main(int argc, char* argv[])
 	TextObject money_game;
 	money_game.SetColor(TextObject::WHITE_TEXT);
 
+	//tên trò chơi
+	TextObject game_name;
+	game_name.SetColor(TextObject::WHITE_TEXT);
 
 	// bom nổ nha
 	ExplosionObject exp_threat;
@@ -170,20 +195,25 @@ int main(int argc, char* argv[])
 		game_map.DrawMap(g_screen);
 
 		//DrawGeometric
-		GeometricFormat rectangle_size(0, 0, SCREEN_WIDTH, 40);
-		ColorData color_data(36, 36, 36);
+		GeometricFormat rectangle_size(0, 0, 120, 110); // đây là phần trong
+		ColorData color_data(18, 56, 9);
 		Geometric::RenderRectangle(rectangle_size, color_data, g_screen);
 
-		GeometricFormat outLineSize(1, 1, SCREEN_WIDTH - 1, 38);
+		GeometricFormat outLineSize(1, 1, 120 - 2, 110 - 2); // đây là phần boder ngoài
 		ColorData color_data2(255, 255, 255);
-
 		Geometric::RenderOutline(outLineSize, color_data2, g_screen);
 
-		//player_power.Show(g_screen);
+		GeometricFormat outLineSize1(2, 2, 120 - 4, 110 - 4);
+		Geometric::RenderOutline(outLineSize1, color_data2, g_screen);
+
+		GeometricFormat outLineSize2(3, 3, 120 - 6, 110 - 6);
+		Geometric::RenderOutline(outLineSize2, color_data2, g_screen);
+
 		player_money.Show(g_screen);
 
-		for (int i = 0; i < threats_list.size(); i++) {
-			ThreatObject* p_threat = threats_list.at(i);
+		// va chạm của nhân vật và Threat
+		for (int i = 0; i < threats_listA.size(); i++) {
+			ThreatObject* p_threat = threats_listA.at(i);
 			if (p_threat != NULL) {
 				p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
 				p_threat->Show(g_screen);
@@ -203,6 +233,42 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		for (int i = 0; i < threats_listB.size(); i++) {
+			ThreatObject* p_threat = threats_listB.at(i);
+			if (p_threat != NULL) {
+				p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+				p_threat->Show(g_screen);
+
+				// xử lý va chạm của nhân vật và Threat
+				SDL_Rect rect_player = p_player.GetRectFrame();
+				SDL_Rect rect_threat = p_threat->GetRectFrame();
+				bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+				if (bCol2 == true) {
+					if (MessageBox(NULL, L"GAME OVER", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+						p_threat->Free();
+						close();
+						SDL_Quit();
+						return 0;
+					}
+				}
+			}
+		}
+
+		// va chạm của nhân vật và cạch đích
+		p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+		p_threat->Show(g_screen);
+		// xử lý va chạm của nhân vật và vạch đích
+		SDL_Rect rect_player = p_player.GetRectFrame();
+		SDL_Rect rect_threat = p_threat->GetRectFrame();
+		bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+		if (bCol2 == true) {
+			if (MessageBox(NULL, L"You win!", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+				p_threat->Free();
+				close();
+				SDL_Quit();
+				return 0;
+			}
+		}
 		// lấy vị trí của nổ
 		int frame_exp_width = exp_threat.get_frame_width();
 		int frame_exp_height = exp_threat.get_frame_height();
@@ -211,8 +277,8 @@ int main(int argc, char* argv[])
 		for (int r = 0; r < bullet_arr.size(); ++r) {
 			BulletObject* p_bullet = bullet_arr.at(r);
 			if (p_bullet != NULL) {
-				for (int t = 0; t < threats_list.size(); ++t) {
-					ThreatObject* obj_threat = threats_list.at(t);
+				for (int t = 0; t < threats_listA.size(); ++t) {
+					ThreatObject* obj_threat = threats_listA.at(t);
 					if (obj_threat != NULL) {
 						SDL_Rect tRect;
 						tRect.x = obj_threat->GetRect().x; // lấy vị trí của con Threat
@@ -236,7 +302,7 @@ int main(int argc, char* argv[])
 
 							p_player.RemoveBullet(r); 
 							obj_threat->Free();
-							threats_list.erase(threats_list.begin() + t);
+							threats_listA.erase(threats_listA.begin() + t);
 						}
 					}
 				}
@@ -252,29 +318,30 @@ int main(int argc, char* argv[])
 
 		time_game.SetText(str_time);
 		time_game.LoadFromRenderText(font_time, g_screen);
-		time_game.RenderText(g_screen, SCREEN_WIDTH - 200, 15);
+		time_game.RenderText(g_screen, 10, 15);
 		
 		// số Threat
 		std::string val_str_mark = std::to_string(mark_value);
-		std::string strMark("Mark: ");
+		std::string strMark("Monster: ");
 		strMark += val_str_mark;
 
 		mark_game.SetText(strMark);
 		mark_game.LoadFromRenderText(font_time, g_screen);
-		mark_game.RenderText(g_screen, SCREEN_WIDTH * 0.5 - 50, 15);
+		mark_game.RenderText(g_screen, 10, 50);
 
 		// số tiền
-		MainObject Money_pic;
-		Money_pic.LoadImg("img//money_img.png", g_screen);
-		Money_pic.SetRect(SCREEN_WIDTH * 0.5 - 250, 15);
-
 		int money_count = p_player.GetMoneyCount();
 		std::string money_str = std::to_string(money_count);
 
 		money_game.SetText(money_str);
 		money_game.LoadFromRenderText(font_time, g_screen);
-		money_game.RenderText(g_screen, SCREEN_WIDTH * 0.5 - 250, 15);
+		money_game.RenderText(g_screen, 40, 83);
 
+		//hiển thị tên trò chơi
+		std::string str_name = "WHERE'S TREASURE ?";
+		game_name.SetText(str_name);
+		game_name.LoadFromRenderText(font_time_name, g_screen);
+		game_name.RenderText(g_screen, SCREEN_WIDTH/2-205, 25);
 
 		SDL_RenderPresent(g_screen);
 
@@ -288,15 +355,24 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	for (int i = 0; i < threats_list.size(); i++) {
-		ThreatObject* p_threat = threats_list.at(i);
+	// phần này là hủy đi các threat đã tạo ra
+	for (int i = 0; i < threats_listA.size(); i++) {
+		ThreatObject* p_threat = threats_listA.at(i);
 		if (p_threat) {
 			p_threat->Free();
 			p_threat = NULL;
 		}
 	}
-	threats_list.clear();
-	
+	threats_listA.clear();
+
+	for (int i = 0; i < threats_listB.size(); i++) {
+		ThreatObject* p_threat = threats_listB.at(i);
+		if (p_threat) {
+			p_threat->Free();
+			p_threat = NULL;
+		}
+	}
+	threats_listB.clear();
 	close();
 	return 0;
 }

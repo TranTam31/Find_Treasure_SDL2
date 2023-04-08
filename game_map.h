@@ -6,12 +6,6 @@
 #define MAX_TILES 20
 
 
-/*class TileMat : public BaseObject
-{
-	TileMat() { ; }
-	~TileMat() { ; }
-};
-*/
 class TileMat : public BaseObject
 {
 public: 
