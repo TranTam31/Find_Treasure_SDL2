@@ -1,4 +1,5 @@
 How to play
+
 Hi guys, today I will introduce to you a game I designed myself, using C++ and SDL2. 
  - The game is called Find Treasure. 
  - Our character has the main task of going through the dangerous forest to reach the treasure. He can only go straight, there is no way back, he finds treasure or dies in this deadly forest. 
