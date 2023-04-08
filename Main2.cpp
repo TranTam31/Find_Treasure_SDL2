@@ -82,7 +82,7 @@ std::vector<ThreatObject*> MakeThreadListA()  // hàm này để tạo ra các T
 	return list_threats;
 }
 
-std::vector<ThreatObject*> MakeThreadListB()  // hàm này để tạo ra các Threats là cái bom
+std::vector<ThreatObject*> MakeThreadListB()  // hàm này để tạo ra các Threats là bom
 {
 	std::vector<ThreatObject*> list_threats;
 
@@ -242,8 +242,8 @@ int main(int argc, char* argv[])
 				// xử lý va chạm của nhân vật và Threat
 				SDL_Rect rect_player = p_player.GetRectFrame();
 				SDL_Rect rect_threat = p_threat->GetRectFrame();
-				bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
-				if (bCol2 == true) {
+				bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+				if (bCol == true) {
 					if (MessageBox(NULL, L"GAME OVER", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 						p_threat->Free();
 						close();
@@ -260,9 +260,9 @@ int main(int argc, char* argv[])
 		// xử lý va chạm của nhân vật và vạch đích
 		SDL_Rect rect_player = p_player.GetRectFrame();
 		SDL_Rect rect_threat = p_threat->GetRectFrame();
-		bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
-		if (bCol2 == true) {
-			if (MessageBox(NULL, L"You win!", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+		bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+		if (bCol == true) {
+			if (MessageBox(NULL, L"The treasure is yours!", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 				p_threat->Free();
 				close();
 				SDL_Quit();
