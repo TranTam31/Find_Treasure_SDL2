@@ -244,7 +244,7 @@ void MainObject::HandelInputAction(SDL_Event events, SDL_Renderer* screen)
 		else if (events.button.button == SDL_BUTTON_LEFT) {
 			BulletObject* p_bullet = new BulletObject();  // tao vien dan moi
 			p_bullet->LoadImg("img//sphere_bullet.png", screen); // đây là loại đạn nào
-			p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.3 -5);
+			p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.3 -5 +10); // vị trí viên đạn
 
 			p_bullet->set_x_val(20); // tốc độ viên đạn
 			p_bullet->set_is_move(true);

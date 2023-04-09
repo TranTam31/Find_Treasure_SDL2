@@ -21,7 +21,7 @@ bool InitData()
 
 	if (ret < 0) return false;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-	g_window = SDL_CreateWindow("Gamedevel", SDL_WINDOWPOS_UNDEFINED, 
+	g_window = SDL_CreateWindow("WHERE'S TREASURE?", SDL_WINDOWPOS_UNDEFINED, 
 		                         SDL_WINDOWPOS_UNDEFINED,
 		                         SCREEN_WIDTH, 
 		                         SCREEN_HEIGHT, 
@@ -71,7 +71,7 @@ std::vector<ThreatObject*> MakeThreadListA()  // hàm này để tạo ra các T
 	for (int i = 0; i < 20; i++) {
 		ThreatObject* p_threat = (threats_objs + i);
 		if (p_threat != NULL) {
-			p_threat->LoadImg("img//threat_level.png", g_screen);
+			p_threat->LoadImg("img//zombie.png", g_screen);
 			p_threat->set_clip();
 			p_threat->set_x_pos(700+i*1200);
 			p_threat->set_y_pos(388+64);
@@ -91,7 +91,7 @@ std::vector<ThreatObject*> MakeThreadListB()  // hàm này để tạo ra các T
 	for (int i = 0; i < 10; i++) {
 		ThreatObject* p_threat = (dynamic_threat + i);
 		if (p_threat != NULL) {
-			p_threat->LoadImg("img//anhdinhlam.png", g_screen);
+			p_threat->LoadImg("img//hand_zombie.png", g_screen);
 			p_threat->set_clip(); 
 			p_threat->set_x_pos(2*(500 + i * 500)); // vị trí của con này trong màn hình
 			p_threat->set_y_pos(390+64);
@@ -110,7 +110,7 @@ ThreatObject* MakeThreadListC()  // hàm này để tạo ra vạch đích
 
 		//ThreatObject* p_threat = (dynamic_threat + i);
 		if (p_threat != NULL) {
-			p_threat->LoadImg("img//khobauchuan1.png", g_screen);
+			p_threat->LoadImg("img//treasure.png", g_screen);
 			p_threat->set_clip();
 			p_threat->set_x_pos(12032); // vị trí của con này trong màn hình
 			p_threat->set_y_pos(390);
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 	ImpTimer fps_timer;
 
 	if (InitData() == false) return -1;
-	g_background.LoadImg("img//anhbautroi.jpg", g_screen);
+	g_background.LoadImg("img//background.jpg", g_screen);
 
 
 	GameMap game_map;
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
 
 	// bom nổ nha
 	ExplosionObject exp_threat;
-	bool tRet = exp_threat.LoadImg("img//exp3.png", g_screen);
+	bool tRet = exp_threat.LoadImg("img//explosion.png", g_screen);
 	if (!tRet) return -1;
 	exp_threat.set_clip();
 
@@ -322,7 +322,7 @@ int main(int argc, char* argv[])
 		
 		// số Threat
 		std::string val_str_mark = std::to_string(mark_value);
-		std::string strMark("Monster: ");
+		std::string strMark("Zombie: ");
 		strMark += val_str_mark;
 
 		mark_game.SetText(strMark);
