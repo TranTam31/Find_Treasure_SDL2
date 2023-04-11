@@ -39,10 +39,10 @@ public:
 private:
 	int money_count;
 	std::vector<BulletObject*> p_bullet_list_;
-	float x_val_;
+	float x_val_; // một lần bấm thì đi bao nhiêu
 	float y_val_;
 
-	float x_pos_;
+	float x_pos_; //vị trí hiện tại
 	float y_pos_;
 
 	int width_frame_;

@@ -17,7 +17,7 @@ TTF_Font* font_time_name = NULL;
 bool InitData()
 {
 	bool success = true;
-	int ret = SDL_Init(SDL_INIT_VIDEO);
+	int ret = SDL_Init(SDL_INIT_VIDEO); // thiết lập môi trường cho SDL
 
 	if (ret < 0) return false;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
@@ -28,10 +28,10 @@ bool InitData()
 		                         SDL_WINDOW_SHOWN);
 	if (g_window == NULL) success = false;
 	else {
-		g_screen = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED);
+		g_screen = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED); // render ra screen
 		if (g_screen == NULL) success = false;
 		else {
-			SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+			SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR); // set màu sắc cho màn hình
 			int imgFlags = IMG_INIT_PNG;
 			if (!(IMG_Init(imgFlags) && imgFlags)) success = false;
 		}
@@ -44,12 +44,6 @@ bool InitData()
 	return success;
 }
 
-bool LoadBackground()
-{
-	bool ret = g_background.LoadImg("img//anhbautroi.jpg", g_screen);
-	if (ret == false) return false;
-	return true;
-}
 
 void close()
 {
@@ -211,6 +205,8 @@ int main(int argc, char* argv[])
 
 		player_money.Show(g_screen);
 
+
+
 		// va chạm của nhân vật và Threat
 		for (int i = 0; i < threats_listA.size(); i++) {
 			ThreatObject* p_threat = threats_listA.at(i);
@@ -223,7 +219,7 @@ int main(int argc, char* argv[])
 				SDL_Rect rect_threat = p_threat->GetRectFrame();
 				bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
 				if (bCol2 == true) {
-					if (MessageBox(NULL, L"GAME OVER", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+					if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 						p_threat->Free();
 						close();
 						SDL_Quit();
@@ -244,7 +240,7 @@ int main(int argc, char* argv[])
 				SDL_Rect rect_threat = p_threat->GetRectFrame();
 				bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
 				if (bCol == true) {
-					if (MessageBox(NULL, L"GAME OVER", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+					if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 						p_threat->Free();
 						close();
 						SDL_Quit();
@@ -262,7 +258,7 @@ int main(int argc, char* argv[])
 		SDL_Rect rect_threat = p_threat->GetRectFrame();
 		bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
 		if (bCol == true) {
-			if (MessageBox(NULL, L"The treasure is yours!", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+			if (MessageBox(NULL, L"--The treasure is yours!--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 				p_threat->Free();
 				close();
 				SDL_Quit();
@@ -343,6 +339,7 @@ int main(int argc, char* argv[])
 		game_name.LoadFromRenderText(font_time_name, g_screen);
 		game_name.RenderText(g_screen, SCREEN_WIDTH/2-205, 25);
 
+		// update lại màn hình
 		SDL_RenderPresent(g_screen);
 
 		// tạo độ trễ cho nhân vật di chuyển chậm lại

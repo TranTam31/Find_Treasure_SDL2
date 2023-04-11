@@ -4,7 +4,7 @@ MainObject::MainObject()
 {
 	frame_ = 0;
 	x_pos_ = 0;
-	y_pos_ = 384;
+	y_pos_ = 200;
 	x_val_ = 0;
 	y_val_ = 0;
 	width_frame_ = 0;
@@ -97,39 +97,37 @@ void MainObject::Show(SDL_Renderer* des)
 	else {
 		LoadImg("img//jum_right.png", des);
 	}
-	frame_++;
-	if (frame_ >= 8) frame_ = 0;
+	frame_++; if (frame_ >= 8) frame_ = 0;
 
-		rect_.x = x_pos_ - map_x_;
-		rect_.y = y_pos_ - map_y_;
+	rect_.x = x_pos_ - map_x_;
+	rect_.y = y_pos_ - map_y_;
 
-		SDL_Rect* current_clip = &frame_clip_[frame_];
+	SDL_Rect* current_clip = &frame_clip_[frame_];
 
-		SDL_Rect renderQuad = { rect_.x, rect_.y, width_frame_, height_frame_ };
-		SDL_RenderCopy(des, p_object_, current_clip, &renderQuad);
-	//}
+	SDL_Rect renderQuad = { rect_.x, rect_.y, width_frame_, height_frame_ };
+	SDL_RenderCopy(des, p_object_, current_clip, &renderQuad);
 }
 
 void MainObject::DoPlayer(Map& map_data)
 {
-		x_val_ = 0;
-		y_val_ += 0.8;
-		if (y_val_ >= MAX_FALL_SPEED) {
-			y_val_ = MAX_FALL_SPEED;
-		}
-		x_val_ += PLAYER_SPEED;
-
-		if (input_type_.jump_ == 1) {
-			if (on_ground_ == true) {
-				y_val_ = -PLAYER_JUMP_VAL;
-			}
-			on_ground_ = false;
-			input_type_.jump_ = 0;
-		}
-
-		CheckToMap(map_data);
-		CenterEntityOnMap(map_data);
+	x_val_ = 0;
+	y_val_ += 0.8;
+	if (y_val_ >= MAX_FALL_SPEED) {
+		y_val_ = MAX_FALL_SPEED;
 	}
+	x_val_ += PLAYER_SPEED;
+
+	if (input_type_.jump_ == 1) {
+		if (on_ground_ == true) {
+			y_val_ = -PLAYER_JUMP_VAL;
+		}
+		on_ground_ = false;
+		input_type_.jump_ = 0;
+	}
+
+	CheckToMap(map_data);
+	CenterEntityOnMap(map_data);
+}
 
 void MainObject::CenterEntityOnMap(Map& map_data)
 {
@@ -244,7 +242,7 @@ void MainObject::HandelInputAction(SDL_Event events, SDL_Renderer* screen)
 		else if (events.button.button == SDL_BUTTON_LEFT) {
 			BulletObject* p_bullet = new BulletObject();  // tao vien dan moi
 			p_bullet->LoadImg("img//sphere_bullet.png", screen); // đây là loại đạn nào
-			p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.3 -5 +10); // vị trí viên đạn
+			p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.3 -5 +10); // vị trí viên đạn ứng với nhân vật, cụ thể là vị trí mũi súng
 
 			p_bullet->set_x_val(20); // tốc độ viên đạn
 			p_bullet->set_is_move(true);

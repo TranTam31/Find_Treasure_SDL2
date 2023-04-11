@@ -1,4 +1,4 @@
-#ifndef COMMON_FUNCTION_H_
+﻿#ifndef COMMON_FUNCTION_H_
 #define COMMON_FUNCTION_H_
 
 #include<windows.h>
@@ -9,8 +9,8 @@
 #include<SDL_mixer.h>
 #include<SDL_ttf.h>
 
-static SDL_Window* g_window = NULL;
-static SDL_Renderer* g_screen = NULL;
+static SDL_Window* g_window = NULL; // khởi tạo khung window
+static SDL_Renderer* g_screen = NULL; // đưa mọi thứ vào trong cái window ấy
 static SDL_Event g_event;
 
 
@@ -44,10 +44,10 @@ typedef struct Input
 
 typedef struct Map
 {
-	int start_x_;
+	int start_x_; // vị trí của ô trong cả bản đồ lớn  
 	int start_y_;
 
-	int max_x_;
+	int max_x_; // chỉ số của ô trong cái map 0 1 2 hoi
 	int max_y_;
 
 	int tile[MAX_MAP_Y][MAX_MAP_X];

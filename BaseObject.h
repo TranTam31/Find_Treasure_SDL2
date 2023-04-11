@@ -1,4 +1,4 @@
-#ifndef BASE_OBJECT_H_
+﻿#ifndef BASE_OBJECT_H_
 #define BASE_OBJECT_H_
 
 #include "CommonFunc.h"
@@ -16,8 +16,8 @@ public:
 	void Render(SDL_Renderer* des, const SDL_Rect* clip = NULL);
 	void Free();
 protected:
-	SDL_Texture* p_object_;
-	SDL_Rect rect_;
+	SDL_Texture* p_object_; // lưu trữ hình ảnh
+	SDL_Rect rect_; // lưu kích thước
 };
 
 
