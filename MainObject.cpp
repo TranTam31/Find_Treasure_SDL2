@@ -99,7 +99,7 @@ void MainObject::Show(SDL_Renderer* des)
 	}
 	frame_++; if (frame_ >= 8) frame_ = 0;
 
-	rect_.x = x_pos_ - map_x_;
+	rect_.x = x_pos_ - map_x_; // tọa độ
 	rect_.y = y_pos_ - map_y_;
 
 	SDL_Rect* current_clip = &frame_clip_[frame_];
@@ -155,7 +155,7 @@ void MainObject::CheckToMap(Map& map_data)
 	int y2 = 0;
 
 	int height_min = height_frame_ < TILE_SIZE ? height_frame_ : TILE_SIZE;
-	x1 = (x_pos_ + x_val_) / TILE_SIZE;
+	x1 = (x_pos_ + x_val_) / TILE_SIZE; // ktra xem đang ở ô thứ bao nhiêu 
 	x2 = (x_pos_ + x_val_ + width_frame_ - 1) / TILE_SIZE;
 
 	y1 = (y_pos_) / TILE_SIZE;

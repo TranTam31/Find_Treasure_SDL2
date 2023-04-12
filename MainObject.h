@@ -42,7 +42,7 @@ private:
 	float x_val_; // một lần bấm thì đi bao nhiêu
 	float y_val_;
 
-	float x_pos_; //vị trí hiện tại
+	float x_pos_; //vị trí hiện tại tính từ vị trí đầu tiên của cả map
 	float y_pos_;
 
 	int width_frame_;
@@ -54,7 +54,7 @@ private:
 	int status_;
 	bool on_ground_;
 
-	int map_x_;
+	int map_x_; // map này có ý nghĩa khác với cái map kia nha, cái lày là vị trí của bản đồ trong screen đang hiển thị
 	int map_y_;
 };
 #endif // !MAIN_OBJECT_H_
