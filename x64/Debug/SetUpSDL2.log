@@ -1,42 +1,14 @@
 ﻿  Main2.cpp
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(46,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(58,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
 C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Geometric.h(13,2): warning C4091: 'typedef ': ignored on left of 'GeometricFormat' when no variable is declared
 C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Geometric.h(22,2): warning C4091: 'typedef ': ignored on left of 'ColorData' when no variable is declared
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(70,27): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(90,25): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(93,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(94,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(112,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(113,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(291,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(292,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  MainObject.cpp
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(102,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(103,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(114,15): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(134,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(141,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(158,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(159,44): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(161,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(162,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(175,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(181,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(182,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(184,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(185,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(199,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(217,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(231,44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(245,90): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\MainObject.cpp(282,34): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  ThreatObject.cpp
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(43,2): warning C4091: 'typedef ': ignored on left of 'Input' when no variable is declared
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\CommonFunc.h(55,2): warning C4091: 'typedef ': ignored on left of 'Map' when no variable is declared
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\ThreatObject.cpp(89,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\ThreatObject.cpp(90,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(78,27): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(98,25): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(101,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(102,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(120,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(121,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(301,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\hahah\source\repos\SetUpSDL2\SetUpSDL2\Main2.cpp(302,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   SetUpSDL2.vcxproj -> C:\Users\hahah\source\repos\SetUpSDL2\x64\Debug\SetUpSDL2.exe

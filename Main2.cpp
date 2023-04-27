@@ -25,7 +25,7 @@ bool InitData()
 		                         SDL_WINDOWPOS_UNDEFINED,
 		                         SCREEN_WIDTH, 
 		                         SCREEN_HEIGHT, 
-		                         SDL_WINDOW_SHOWN);
+		                         SDL_WINDOW_SHOWN); // tạo khung wimdow
 	if (g_window == NULL) success = false;
 	else {
 		g_screen = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED); // render ra screen
@@ -40,6 +40,14 @@ bool InitData()
 		font_time = TTF_OpenFont("font//SuperMario256.ttf", 15); // 15 là kích cỡ text
 		font_time_name = TTF_OpenFont("font//SuperMario256.ttf", 35);
 		if (font_time == NULL) success = false;
+	}
+	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) success = false;
+	g_sound_jump = Mix_LoadWAV("sound//jump_sound.wav");
+	g_sound_bullet = Mix_LoadWAV("sound//Laser.wav");
+	g_sound_exp = Mix_LoadWAV("sound//explosion.wav");
+	g_sound_main = Mix_LoadWAV("sound//sound_main.wav");
+	if (g_sound_bullet == NULL || g_sound_exp == NULL || g_sound_jump == NULL || g_sound_main == NULL) {
+		success = false;
 	}
 	return success;
 }
@@ -121,7 +129,7 @@ int main(int argc, char* argv[])
 
 	if (InitData() == false) return -1;
 	g_background.LoadImg("img//background.jpg", g_screen);
-
+	Mix_PlayChannel(-1, g_sound_main, 0);
 
 	GameMap game_map;
 	game_map.LoadMap("map//map03.dat");
@@ -134,7 +142,7 @@ int main(int argc, char* argv[])
 	// tạo ra Threat A và B
 	std::vector<ThreatObject*> threats_listA = MakeThreadListA();
 	std::vector<ThreatObject*> threats_listB = MakeThreadListB();
-	// đây là home nè
+	// đây là treasure
 	ThreatObject* p_threat = MakeThreadListC();
 
 	// hình ảnh của đồng tiền
@@ -172,7 +180,7 @@ int main(int argc, char* argv[])
 			{
 				is_quit = true;
 			}
-			p_player.HandelInputAction(g_event, g_screen);
+			p_player.HandelInputAction(g_event, g_screen, g_sound_bullet, g_sound_jump);
 		}
 		SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
 		SDL_RenderClear(g_screen);
@@ -181,7 +189,7 @@ int main(int argc, char* argv[])
 		Map map_data = game_map.getMap();
 
 		p_player.HandleBullet(g_screen);
-		p_player.SetMapXY(map_data.start_x_, map_data.start_y_);
+		p_player.SetMapXY(map_data.start_x_, map_data.start_y_); //lấy khoảng map đang hiện trên screen
 		p_player.DoPlayer(map_data);
 		p_player.Show(g_screen);
 
@@ -240,6 +248,7 @@ int main(int argc, char* argv[])
 				SDL_Rect rect_threat = p_threat->GetRectFrame();
 				bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
 				if (bCol == true) {
+					Mix_HaltChannel(-1);
 					if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 						p_threat->Free();
 						close();
@@ -258,6 +267,7 @@ int main(int argc, char* argv[])
 		SDL_Rect rect_threat = p_threat->GetRectFrame();
 		bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
 		if (bCol == true) {
+			Mix_HaltChannel(-1);
 			if (MessageBox(NULL, L"--The treasure is yours!--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
 				p_threat->Free();
 				close();
@@ -296,7 +306,8 @@ int main(int argc, char* argv[])
 								exp_threat.Show(g_screen);
 							}
 
-							p_player.RemoveBullet(r); 
+							p_player.RemoveBullet(r);
+							Mix_PlayChannel(-1, g_sound_exp, 0);
 							obj_threat->Free();
 							threats_listA.erase(threats_listA.begin() + t);
 						}
@@ -308,14 +319,14 @@ int main(int argc, char* argv[])
 		//show game time
 		std::string str_time = "Time: ";
 		Uint32 time_val = SDL_GetTicks() / 80;
-			
+
 		std::string str_val = std::to_string(time_val);
 		str_time += str_val;
 
 		time_game.SetText(str_time);
 		time_game.LoadFromRenderText(font_time, g_screen);
 		time_game.RenderText(g_screen, 10, 15);
-		
+
 		// số Threat
 		std::string val_str_mark = std::to_string(mark_value);
 		std::string strMark("Zombie: ");
@@ -337,7 +348,7 @@ int main(int argc, char* argv[])
 		std::string str_name = "WHERE'S TREASURE ?";
 		game_name.SetText(str_name);
 		game_name.LoadFromRenderText(font_time_name, g_screen);
-		game_name.RenderText(g_screen, SCREEN_WIDTH/2-205, 25);
+		game_name.RenderText(g_screen, SCREEN_WIDTH / 2 - 205, 25);
 
 		// update lại màn hình
 		SDL_RenderPresent(g_screen);
@@ -348,7 +359,7 @@ int main(int argc, char* argv[])
 
 		if (real_imp_time < time_one_frame) {
 			int delay_time = time_one_frame - real_imp_time;
-			if(delay_time>=0) SDL_Delay(delay_time);
+			if (delay_time >= 0) SDL_Delay(delay_time);
 		}
 	}
 

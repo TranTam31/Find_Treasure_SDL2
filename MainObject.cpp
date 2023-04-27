@@ -233,16 +233,18 @@ void MainObject::CheckToMap(Map& map_data)
 	}
 }
 
-void MainObject::HandelInputAction(SDL_Event events, SDL_Renderer* screen)
+void MainObject::HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix_Chunk* bullet_sound, Mix_Chunk* jump_sound)
 {
 	if (events.type == SDL_MOUSEBUTTONDOWN) {
 		if (events.button.button == SDL_BUTTON_RIGHT) {
 			input_type_.jump_ = 1;
+			Mix_PlayChannel(-1, jump_sound, 0);
 		}
 		else if (events.button.button == SDL_BUTTON_LEFT) {
 			BulletObject* p_bullet = new BulletObject();  // tao vien dan moi
 			p_bullet->LoadImg("img//sphere_bullet.png", screen); // đây là loại đạn nào
 			p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.3 -5 +10); // vị trí viên đạn ứng với nhân vật, cụ thể là vị trí mũi súng
+			Mix_PlayChannel(-1, bullet_sound, 0);
 
 			p_bullet->set_x_val(20); // tốc độ viên đạn
 			p_bullet->set_is_move(true);

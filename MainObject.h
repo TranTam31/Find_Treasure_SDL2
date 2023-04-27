@@ -24,7 +24,7 @@ public:
 	void CheckToMap(Map& map_data);
 	void SetMapXY(const int map_x, const int map_y) { map_x_ = map_x; map_y_ = map_y; }
 	void CenterEntityOnMap(Map& map_data);
-	void HandelInputAction(SDL_Event events, SDL_Renderer* screen);
+	void HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix_Chunk* bullet_sound, Mix_Chunk* jump_sound);
 	
 	void RemoveBullet(const int& idx);
 	void set_bullet_list(std::vector<BulletObject*> bullet_list)
