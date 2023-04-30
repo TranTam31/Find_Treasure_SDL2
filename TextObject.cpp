@@ -70,3 +70,12 @@ void TextObject::RenderText(SDL_Renderer* screen,
 	}
 	SDL_RenderCopyEx(screen, texture_, clip, &renderQuad, angle, center, flip);
 }
+
+SDL_Rect TextObject::GetRect(int x, int y, int w, int h) {
+	SDL_Rect rect_;
+	rect_.x = x;
+	rect_.y = y;
+	rect_.w = w;
+	rect_.h = h;
+	return rect_;
+}

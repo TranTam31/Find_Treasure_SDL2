@@ -16,6 +16,7 @@ static Mix_Chunk* g_sound_jump;
 static Mix_Chunk* g_sound_bullet; 
 static Mix_Chunk* g_sound_exp;
 static Mix_Chunk* g_sound_main;
+static Mix_Chunk* g_sound_menu;
 
 const int FRAME_PER_SECOND = 25;
 const int SCREEN_WIDTH = 1280;
@@ -60,6 +61,7 @@ typedef struct Map
 namespace SDLCommonFunc
 {
 	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
+	bool CheckFocusWithRect(int& x, int& y,const SDL_Rect& rect);
 }
 
 #endif

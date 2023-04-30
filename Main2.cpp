@@ -8,11 +8,14 @@
 #include"TextObject.h"
 #include"PlayerMoney.h"
 #include"Geometric.h"
+
 using namespace SDLCommonFunc;
 
 BaseObject g_background;
+BaseObject g_start;
 TTF_Font* font_time = NULL;
 TTF_Font* font_time_name = NULL;
+TTF_Font* font_menu = NULL;
 
 bool InitData()
 {
@@ -39,6 +42,7 @@ bool InitData()
 		if (TTF_Init() == -1) success = false;
 		font_time = TTF_OpenFont("font//SuperMario256.ttf", 15); // 15 là kích cỡ text
 		font_time_name = TTF_OpenFont("font//SuperMario256.ttf", 35);
+		font_menu = TTF_OpenFont("font//SuperMario256.ttf", 40);
 		if (font_time == NULL) success = false;
 	}
 	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) success = false;
@@ -46,7 +50,8 @@ bool InitData()
 	g_sound_bullet = Mix_LoadWAV("sound//Laser.wav");
 	g_sound_exp = Mix_LoadWAV("sound//explosion.wav");
 	g_sound_main = Mix_LoadWAV("sound//sound_main.wav");
-	if (g_sound_bullet == NULL || g_sound_exp == NULL || g_sound_jump == NULL || g_sound_main == NULL) {
+	g_sound_menu = Mix_LoadWAV("sound//sound_menu.wav");
+	if (g_sound_bullet == NULL || g_sound_exp == NULL || g_sound_jump == NULL || g_sound_main == NULL || g_sound_menu == NULL) {
 		success = false;
 	}
 	return success;
@@ -125,262 +130,338 @@ ThreatObject* MakeThreadListC()  // hàm này để tạo ra vạch đích
 
 int main(int argc, char* argv[])
 {
+
 	ImpTimer fps_timer;
 
 	if (InitData() == false) return -1;
-	g_background.LoadImg("img//background.jpg", g_screen);
-	Mix_PlayChannel(-1, g_sound_main, 0);
+	g_start.LoadImg("img//menu_pic.png", g_screen);
+	Mix_PlayChannel(-1, g_sound_menu, 0);
+	SDL_Rect pos_arr[2];
+	pos_arr[0].x = 1280 / 2 - 300;
+	pos_arr[0].y = 580;
 
-	GameMap game_map;
-	game_map.LoadMap("map//map03.dat");
-	game_map.LoadTiles(g_screen);
+	pos_arr[1].x = 1280 / 2 + 100;
+	pos_arr[1].y = 580;
 
-	MainObject p_player;
-	p_player.LoadImg("img//player_right.png", g_screen);
-	p_player.set_clips();
+	TextObject text_menu[2];
+	text_menu[0].SetColor(TextObject::WHITE_TEXT);
 
-	// tạo ra Threat A và B
-	std::vector<ThreatObject*> threats_listA = MakeThreadListA();
-	std::vector<ThreatObject*> threats_listB = MakeThreadListB();
-	// đây là treasure
-	ThreatObject* p_threat = MakeThreadListC();
+	text_menu[1].SetColor(TextObject::WHITE_TEXT);
 
-	// hình ảnh của đồng tiền
-	PlayerMoney player_money;
-	player_money.Init(g_screen);
-	player_money.SetPos(5, 75);
-
-	// các text money, thời gian, số lượng Threat bắn được
-	TextObject time_game;
-	time_game.SetColor(TextObject::WHITE_TEXT);
-
-	TextObject mark_game;
-	mark_game.SetColor(TextObject::WHITE_TEXT);
-	UINT mark_value = 0;
-
-	TextObject money_game;
-	money_game.SetColor(TextObject::WHITE_TEXT);
-
-	//tên trò chơi
-	TextObject game_name;
-	game_name.SetColor(TextObject::WHITE_TEXT);
-
-	// bom nổ nha
-	ExplosionObject exp_threat;
-	bool tRet = exp_threat.LoadImg("img//explosion.png", g_screen);
-	if (!tRet) return -1;
-	exp_threat.set_clip();
 
 	bool is_quit = false;
 	while (!is_quit)
 	{
-		fps_timer.start();
-		while (SDL_PollEvent(&g_event) != 0) {
-			if (g_event.type == SDL_QUIT)
-			{
-				is_quit = true;
-			}
-			p_player.HandelInputAction(g_event, g_screen, g_sound_bullet, g_sound_jump);
-		}
 		SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
 		SDL_RenderClear(g_screen);
-		g_background.Render(g_screen, NULL);
+		g_start.Render(g_screen, NULL);
 
-		Map map_data = game_map.getMap();
+		text_menu[0].SetText("Play Game");
+		text_menu[0].LoadFromRenderText(font_menu, g_screen);
+		text_menu[0].RenderText(g_screen, pos_arr[0].x, pos_arr[0].y);
+		text_menu[1].SetText("Exit");
+		text_menu[1].LoadFromRenderText(font_menu, g_screen);
+		text_menu[1].RenderText(g_screen, pos_arr[1].x, pos_arr[1].y);
 
-		p_player.HandleBullet(g_screen);
-		p_player.SetMapXY(map_data.start_x_, map_data.start_y_); //lấy khoảng map đang hiện trên screen
-		p_player.DoPlayer(map_data);
-		p_player.Show(g_screen);
+		int xm = 0, ym = 0;
+		SDL_Event m_event;
+		while (SDL_PollEvent(&m_event) != 0) {
+			switch (m_event.type) {
+			case SDL_QUIT:
+				is_quit = true;
+			case SDL_MOUSEMOTION:
+			{
+				xm = m_event.motion.x;
+				ym = m_event.motion.y;
 
-		game_map.SetMap(map_data);  //đoạn này là để liên tục cập nhật lại map ở trong màn hình
-		game_map.DrawMap(g_screen);
+				if (CheckFocusWithRect(xm, ym, text_menu[0].GetRect(pos_arr[0].x, pos_arr[0].y, 270, 30))) {
+					text_menu[0].SetColor(TextObject::RED_TEXT);
+				}
+				else {
+					text_menu[0].SetColor(TextObject::WHITE_TEXT);
+				}
 
-		//DrawGeometric
-		GeometricFormat rectangle_size(0, 0, 120, 110); // đây là phần trong
-		ColorData color_data(18, 56, 9);
-		Geometric::RenderRectangle(rectangle_size, color_data, g_screen);
-
-		GeometricFormat outLineSize(1, 1, 120 - 2, 110 - 2); // đây là phần boder ngoài
-		ColorData color_data2(255, 255, 255);
-		Geometric::RenderOutline(outLineSize, color_data2, g_screen);
-
-		GeometricFormat outLineSize1(2, 2, 120 - 4, 110 - 4);
-		Geometric::RenderOutline(outLineSize1, color_data2, g_screen);
-
-		GeometricFormat outLineSize2(3, 3, 120 - 6, 110 - 6);
-		Geometric::RenderOutline(outLineSize2, color_data2, g_screen);
-
-		player_money.Show(g_screen);
-
-
-
-		// va chạm của nhân vật và Threat
-		for (int i = 0; i < threats_listA.size(); i++) {
-			ThreatObject* p_threat = threats_listA.at(i);
-			if (p_threat != NULL) {
-				p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
-				p_threat->Show(g_screen);
-
-				// xử lý va chạm của nhân vật và Threat
-				SDL_Rect rect_player = p_player.GetRectFrame();
-				SDL_Rect rect_threat = p_threat->GetRectFrame();
-				bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
-				if (bCol2 == true) {
-					if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
-						p_threat->Free();
-						close();
-						SDL_Quit();
-						return 0;
-					}
+				if (CheckFocusWithRect(xm, ym, text_menu[1].GetRect(pos_arr[1].x, pos_arr[1].y, 100, 30))) {
+					text_menu[1].SetColor(TextObject::RED_TEXT);
+				}
+				else {
+					text_menu[1].SetColor(TextObject::WHITE_TEXT);
 				}
 			}
-		}
-
-		for (int i = 0; i < threats_listB.size(); i++) {
-			ThreatObject* p_threat = threats_listB.at(i);
-			if (p_threat != NULL) {
-				p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
-				p_threat->Show(g_screen);
-
-				// xử lý va chạm của nhân vật và Threat
-				SDL_Rect rect_player = p_player.GetRectFrame();
-				SDL_Rect rect_threat = p_threat->GetRectFrame();
-				bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
-				if (bCol == true) {
+			break;
+			case SDL_MOUSEBUTTONDOWN:
+			{
+				xm = m_event.button.x;
+				ym = m_event.button.y;
+				if (CheckFocusWithRect(xm, ym, text_menu[0].GetRect(pos_arr[0].x, pos_arr[0].y, 270, 30))) {
 					Mix_HaltChannel(-1);
-					if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
-						p_threat->Free();
-						close();
-						SDL_Quit();
-						return 0;
-					}
-				}
-			}
-		}
 
-		// va chạm của nhân vật và cạch đích
-		p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
-		p_threat->Show(g_screen);
-		// xử lý va chạm của nhân vật và vạch đích
-		SDL_Rect rect_player = p_player.GetRectFrame();
-		SDL_Rect rect_threat = p_threat->GetRectFrame();
-		bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
-		if (bCol == true) {
-			Mix_HaltChannel(-1);
-			if (MessageBox(NULL, L"--The treasure is yours!--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
-				p_threat->Free();
-				close();
-				SDL_Quit();
-				return 0;
-			}
-		}
-		// lấy vị trí của nổ
-		int frame_exp_width = exp_threat.get_frame_width();
-		int frame_exp_height = exp_threat.get_frame_height();
+					// đưa chương trình ở dưới vào
+					g_background.LoadImg("img//background.jpg", g_screen);
+					Mix_PlayChannel(-1, g_sound_main, 0);
 
-		std::vector<BulletObject*> bullet_arr = p_player.get_bullet_list();
-		for (int r = 0; r < bullet_arr.size(); ++r) {
-			BulletObject* p_bullet = bullet_arr.at(r);
-			if (p_bullet != NULL) {
-				for (int t = 0; t < threats_listA.size(); ++t) {
-					ThreatObject* obj_threat = threats_listA.at(t);
-					if (obj_threat != NULL) {
-						SDL_Rect tRect;
-						tRect.x = obj_threat->GetRect().x; // lấy vị trí của con Threat
-						tRect.y = obj_threat->GetRect().y;
-						tRect.w = obj_threat->get_width_frame(); // đây là lấy vị trí chính xác của frame đang hiện thị
-						tRect.h = obj_threat->get_height_frame();
+					GameMap game_map;
+					game_map.LoadMap("map//map03.dat");
+					game_map.LoadTiles(g_screen);
 
-						SDL_Rect bRect = p_bullet->GetRect(); // lấy vị trí của viên đạn
-						bool bCol = SDLCommonFunc::CheckCollision(bRect, tRect);
+					MainObject p_player;
+					p_player.LoadImg("img//player_right.png", g_screen);
+					p_player.set_clips();
 
-						if (bCol) {
-							mark_value++;
-							for (int ex = 0; ex < NUM_FRAME_EXP; ++ex) {
-								int x_pos = p_bullet->GetRect().x - frame_exp_width * 0.5; // đặt vị trí của nổ tại vị trí của viên đạn vừa chạm vào Threat
-								int y_pos = p_bullet->GetRect().y - frame_exp_height * 0.5;
+					// tạo ra Threat A và B
+					std::vector<ThreatObject*> threats_listA = MakeThreadListA();
+					std::vector<ThreatObject*> threats_listB = MakeThreadListB();
+					// đây là treasure
+					ThreatObject* p_threat = MakeThreadListC();
 
-								exp_threat.set_frame(ex);
-								exp_threat.SetRect(x_pos, y_pos);
-								exp_threat.Show(g_screen);
+					// hình ảnh của đồng tiền
+					PlayerMoney player_money;
+					player_money.Init(g_screen);
+					player_money.SetPos(5, 75);
+
+					// các text money, thời gian, số lượng Threat bắn được
+					TextObject time_game;
+					time_game.SetColor(TextObject::WHITE_TEXT);
+
+					TextObject mark_game;
+					mark_game.SetColor(TextObject::WHITE_TEXT);
+					UINT mark_value = 0;
+
+					TextObject money_game;
+					money_game.SetColor(TextObject::WHITE_TEXT);
+
+					//tên trò chơi
+					TextObject game_name;
+					game_name.SetColor(TextObject::WHITE_TEXT);
+
+					// bom nổ nha
+					ExplosionObject exp_threat;
+					bool tRet = exp_threat.LoadImg("img//explosion.png", g_screen);
+					if (!tRet) return -1;
+					exp_threat.set_clip();
+
+					while (!is_quit)
+					{
+						fps_timer.start();
+						while (SDL_PollEvent(&g_event) != 0) {
+							if (g_event.type == SDL_QUIT)
+							{
+								is_quit = true;
 							}
+							p_player.HandelInputAction(g_event, g_screen, g_sound_bullet, g_sound_jump);
+						}
+						SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+						SDL_RenderClear(g_screen);
+						g_background.Render(g_screen, NULL);
 
-							p_player.RemoveBullet(r);
-							Mix_PlayChannel(-1, g_sound_exp, 0);
-							obj_threat->Free();
-							threats_listA.erase(threats_listA.begin() + t);
+						Map map_data = game_map.getMap();
+
+						p_player.HandleBullet(g_screen);
+						p_player.SetMapXY(map_data.start_x_, map_data.start_y_); //lấy khoảng map đang hiện trên screen
+						p_player.DoPlayer(map_data);
+						p_player.Show(g_screen);
+
+						game_map.SetMap(map_data);  //đoạn này là để liên tục cập nhật lại map ở trong màn hình
+						game_map.DrawMap(g_screen);
+
+						//DrawGeometric
+						GeometricFormat rectangle_size(0, 0, 120, 110); // đây là phần trong
+						ColorData color_data(18, 56, 9);
+						Geometric::RenderRectangle(rectangle_size, color_data, g_screen);
+
+						GeometricFormat outLineSize(1, 1, 120 - 2, 110 - 2); // đây là phần boder ngoài
+						ColorData color_data2(255, 255, 255);
+						Geometric::RenderOutline(outLineSize, color_data2, g_screen);
+
+						GeometricFormat outLineSize1(2, 2, 120 - 4, 110 - 4);
+						Geometric::RenderOutline(outLineSize1, color_data2, g_screen);
+
+						GeometricFormat outLineSize2(3, 3, 120 - 6, 110 - 6);
+						Geometric::RenderOutline(outLineSize2, color_data2, g_screen);
+
+						player_money.Show(g_screen);
+
+
+
+						// va chạm của nhân vật và Threat
+						for (int i = 0; i < threats_listA.size(); i++) {
+							ThreatObject* p_threat = threats_listA.at(i);
+							if (p_threat != NULL) {
+								p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+								p_threat->Show(g_screen);
+
+								// xử lý va chạm của nhân vật và Threat
+								SDL_Rect rect_player = p_player.GetRectFrame();
+								SDL_Rect rect_threat = p_threat->GetRectFrame();
+								bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+								if (bCol2 == true) {
+									Mix_HaltChannel(-1);
+									if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+										p_threat->Free();
+										close();
+										SDL_Quit();
+										return 0;
+									}
+								}
+							}
+						}
+
+						for (int i = 0; i < threats_listB.size(); i++) {
+							ThreatObject* p_threat = threats_listB.at(i);
+							if (p_threat != NULL) {
+								p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+								p_threat->Show(g_screen);
+
+								// xử lý va chạm của nhân vật và Threat
+								SDL_Rect rect_player = p_player.GetRectFrame();
+								SDL_Rect rect_threat = p_threat->GetRectFrame();
+								bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+								if (bCol == true) {
+									Mix_HaltChannel(-1);
+									if (MessageBox(NULL, L"--GAME OVER--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+										p_threat->Free();
+										close();
+										SDL_Quit();
+										return 0;
+									}
+								}
+							}
+						}
+
+						// va chạm của nhân vật và cạch đích
+						p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+						p_threat->Show(g_screen);
+						// xử lý va chạm của nhân vật và vạch đích
+						SDL_Rect rect_player = p_player.GetRectFrame();
+						SDL_Rect rect_threat = p_threat->GetRectFrame();
+						bool bCol = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+						if (bCol == true) {
+							Mix_HaltChannel(-1);
+							if (MessageBox(NULL, L"--The treasure is yours!--", L"info", MB_OK | MB_ICONSTOP) == IDOK) {
+								p_threat->Free();
+								close();
+								SDL_Quit();
+								return 0;
+							}
+						}
+						// lấy vị trí của nổ
+						int frame_exp_width = exp_threat.get_frame_width();
+						int frame_exp_height = exp_threat.get_frame_height();
+
+						std::vector<BulletObject*> bullet_arr = p_player.get_bullet_list();
+						for (int r = 0; r < bullet_arr.size(); ++r) {
+							BulletObject* p_bullet = bullet_arr.at(r);
+							if (p_bullet != NULL) {
+								for (int t = 0; t < threats_listA.size(); ++t) {
+									ThreatObject* obj_threat = threats_listA.at(t);
+									if (obj_threat != NULL) {
+										SDL_Rect tRect;
+										tRect.x = obj_threat->GetRect().x; // lấy vị trí của con Threat
+										tRect.y = obj_threat->GetRect().y;
+										tRect.w = obj_threat->get_width_frame(); // đây là lấy vị trí chính xác của frame đang hiện thị
+										tRect.h = obj_threat->get_height_frame();
+
+										SDL_Rect bRect = p_bullet->GetRect(); // lấy vị trí của viên đạn
+										bool bCol = SDLCommonFunc::CheckCollision(bRect, tRect);
+
+										if (bCol) {
+											mark_value++;
+											for (int ex = 0; ex < NUM_FRAME_EXP; ++ex) {
+												int x_pos = p_bullet->GetRect().x - frame_exp_width * 0.5; // đặt vị trí của nổ tại vị trí của viên đạn vừa chạm vào Threat
+												int y_pos = p_bullet->GetRect().y - frame_exp_height * 0.5;
+
+												exp_threat.set_frame(ex);
+												exp_threat.SetRect(x_pos, y_pos);
+												exp_threat.Show(g_screen);
+											}
+
+											p_player.RemoveBullet(r);
+											Mix_PlayChannel(-1, g_sound_exp, 0);
+											obj_threat->Free();
+											threats_listA.erase(threats_listA.begin() + t);
+										}
+									}
+								}
+							}
+						}
+
+						//show game time
+						std::string str_time = "Time: ";
+						Uint32 time_val = SDL_GetTicks() / 80;
+
+						std::string str_val = std::to_string(time_val);
+						str_time += str_val;
+
+						time_game.SetText(str_time);
+						time_game.LoadFromRenderText(font_time, g_screen);
+						time_game.RenderText(g_screen, 10, 15);
+
+						// số Threat
+						std::string val_str_mark = std::to_string(mark_value);
+						std::string strMark("Zombie: ");
+						strMark += val_str_mark;
+
+						mark_game.SetText(strMark);
+						mark_game.LoadFromRenderText(font_time, g_screen);
+						mark_game.RenderText(g_screen, 10, 50);
+
+						// số tiền
+						int money_count = p_player.GetMoneyCount();
+						std::string money_str = std::to_string(money_count);
+
+						money_game.SetText(money_str);
+						money_game.LoadFromRenderText(font_time, g_screen);
+						money_game.RenderText(g_screen, 40, 83);
+
+						//hiển thị tên trò chơi
+						std::string str_name = "WHERE'S TREASURE ?";
+						game_name.SetText(str_name);
+						game_name.LoadFromRenderText(font_time_name, g_screen);
+						game_name.RenderText(g_screen, SCREEN_WIDTH / 2 - 205, 25);
+
+						// update lại màn hình
+						SDL_RenderPresent(g_screen);
+
+						// tạo độ trễ cho nhân vật di chuyển chậm lại
+						int real_imp_time = fps_timer.get_tick();
+						int time_one_frame = 1000 / FRAME_PER_SECOND;
+
+						if (real_imp_time < time_one_frame) {
+							int delay_time = time_one_frame - real_imp_time;
+							if (delay_time >= 0) SDL_Delay(delay_time);
 						}
 					}
+					for (int i = 0; i < threats_listA.size(); i++) {
+						ThreatObject* p_threat = threats_listA.at(i);
+						if (p_threat) {
+							p_threat->Free();
+							p_threat = NULL;
+						}
+					}
+					threats_listA.clear();
+
+					for (int i = 0; i < threats_listB.size(); i++) {
+						ThreatObject* p_threat = threats_listB.at(i);
+						if (p_threat) {
+							p_threat->Free();
+							p_threat = NULL;
+						}
+					}
+					threats_listB.clear();
+					close();
+				}
+				else if (CheckFocusWithRect(xm, ym, text_menu[1].GetRect(pos_arr[1].x, pos_arr[1].y, 100, 30))) {
+					is_quit = true;
 				}
 			}
+			break;
+			case SDL_KEYDOWN:
+				if (m_event.key.keysym.sym == SDLK_ESCAPE) is_quit = true;
+			default:
+				break;
+			}
 		}
-
-		//show game time
-		std::string str_time = "Time: ";
-		Uint32 time_val = SDL_GetTicks() / 80;
-
-		std::string str_val = std::to_string(time_val);
-		str_time += str_val;
-
-		time_game.SetText(str_time);
-		time_game.LoadFromRenderText(font_time, g_screen);
-		time_game.RenderText(g_screen, 10, 15);
-
-		// số Threat
-		std::string val_str_mark = std::to_string(mark_value);
-		std::string strMark("Zombie: ");
-		strMark += val_str_mark;
-
-		mark_game.SetText(strMark);
-		mark_game.LoadFromRenderText(font_time, g_screen);
-		mark_game.RenderText(g_screen, 10, 50);
-
-		// số tiền
-		int money_count = p_player.GetMoneyCount();
-		std::string money_str = std::to_string(money_count);
-
-		money_game.SetText(money_str);
-		money_game.LoadFromRenderText(font_time, g_screen);
-		money_game.RenderText(g_screen, 40, 83);
-
-		//hiển thị tên trò chơi
-		std::string str_name = "WHERE'S TREASURE ?";
-		game_name.SetText(str_name);
-		game_name.LoadFromRenderText(font_time_name, g_screen);
-		game_name.RenderText(g_screen, SCREEN_WIDTH / 2 - 205, 25);
-
-		// update lại màn hình
 		SDL_RenderPresent(g_screen);
-
-		// tạo độ trễ cho nhân vật di chuyển chậm lại
-		int real_imp_time = fps_timer.get_tick();
-		int time_one_frame = 1000 / FRAME_PER_SECOND;
-
-		if (real_imp_time < time_one_frame) {
-			int delay_time = time_one_frame - real_imp_time;
-			if (delay_time >= 0) SDL_Delay(delay_time);
-		}
 	}
-
-	// phần này là hủy đi các threat đã tạo ra
-	for (int i = 0; i < threats_listA.size(); i++) {
-		ThreatObject* p_threat = threats_listA.at(i);
-		if (p_threat) {
-			p_threat->Free();
-			p_threat = NULL;
-		}
-	}
-	threats_listA.clear();
-
-	for (int i = 0; i < threats_listB.size(); i++) {
-		ThreatObject* p_threat = threats_listB.at(i);
-		if (p_threat) {
-			p_threat->Free();
-			p_threat = NULL;
-		}
-	}
-	threats_listB.clear();
-	close();
 	return 0;
 }
